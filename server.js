@@ -1,13 +1,11 @@
-// import mysql2
+// Import mysql2, inquirer, and console.table
 const mysql = require('mysql2')
-// import inquirer 
 const inquirer = require('inquirer'); 
-// import console.table
 const cTable = require('console.table'); 
 
 require('dotenv').config()
 
-// connection to database
+// Connect to the database
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -21,17 +19,17 @@ connection.connect(err => {
   afterConnection();
 });
 
-// function after connection is established and welcome image shows 
+// Welcome image after connection is established 
 afterConnection = () => {
   console.log("***********************************")
   console.log("*                                 *")
-  console.log("*        EMPLOYEE MANAGER         *")
+  console.log("*        EMPLOYEE TRACKER         *")
   console.log("*                                 *")
   console.log("***********************************")
   promptUser();
 };
 
-// inquirer prompt for first action
+// Inquirer prompt
 const promptUser = () => {
   inquirer.prompt ([
     {
@@ -115,7 +113,7 @@ const promptUser = () => {
   });
 };
 
-// function to show all departments 
+// Function to show the user all of the departments 
 showDepartments = () => {
   console.log('Showing all departments...\n');
   const sql = `SELECT department.id AS id, department.name AS department FROM department`; 
@@ -127,7 +125,7 @@ showDepartments = () => {
   });
 };
 
-// function to show all roles 
+// Function to show the user all of the roles
 showRoles = () => {
   console.log('Showing all roles...\n');
 
@@ -142,7 +140,7 @@ showRoles = () => {
   })
 };
 
-// function to show all employees 
+// Function to show the user all of the employees 
 showEmployees = () => {
   console.log('Showing all employees...\n'); 
   const sql = `SELECT employee.id, 
@@ -164,7 +162,7 @@ showEmployees = () => {
   });
 };
 
-// function to add a department 
+// Function to allow user to add a department 
 addDepartment = () => {
   inquirer.prompt([
     {
@@ -193,7 +191,7 @@ addDepartment = () => {
   });
 };
 
-// function to add a role 
+// Function for user to add a role
 addRole = () => {
   inquirer.prompt([
     {
@@ -226,7 +224,7 @@ addRole = () => {
     .then(answer => {
       const params = [answer.role, answer.salary];
 
-      // grab dept from department table
+      // Grabs the department from the table
       const roleSql = `SELECT name, id FROM department`; 
 
       connection.promise().query(roleSql, (err, data) => {
@@ -260,7 +258,7 @@ addRole = () => {
  });
 };
 
-// function to add an employee 
+// Function to let user add an employee
 addEmployee = () => {
   inquirer.prompt([
     {
@@ -293,7 +291,7 @@ addEmployee = () => {
     .then(answer => {
     const params = [answer.fistName, answer.lastName]
 
-    // grab roles from roles table
+    // Grabs roles from the roles table
     const roleSql = `SELECT role.id, role.title FROM role`;
   
     connection.promise().query(roleSql, (err, data) => {
@@ -319,8 +317,6 @@ addEmployee = () => {
                 if (err) throw err;
 
                 const managers = data.map(({ id, first_name, last_name }) => ({ name: first_name + " "+ last_name, value: id }));
-
-                // console.log(managers);
 
                 inquirer.prompt([
                   {
@@ -350,9 +346,9 @@ addEmployee = () => {
   });
 };
 
-// function to update an employee 
+// Function to allow user to be able to update employees 
 updateEmployee = () => {
-  // get employees from employee table 
+  // Gets employees from the employee table 
   const employeeSql = `SELECT * FROM employee`;
 
   connection.promise().query(employeeSql, (err, data) => {
@@ -395,9 +391,6 @@ updateEmployee = () => {
                 let employee = params[0]
                 params[0] = role
                 params[1] = employee 
-                
-
-                // console.log(params)
 
                 const sql = `UPDATE employee SET role_id = ? WHERE id = ?`;
 
@@ -413,9 +406,9 @@ updateEmployee = () => {
   });
 };
 
-// function to update an employee 
+// Function allows user to update an employee 
 updateManager = () => {
-  // get employees from employee table 
+  // Gets employees from the employee table 
   const employeeSql = `SELECT * FROM employee`;
 
   connection.promise().query(employeeSql, (err, data) => {
@@ -458,9 +451,6 @@ updateManager = () => {
                     let employee = params[0]
                     params[0] = manager
                     params[1] = employee 
-                    
-
-                    // console.log(params)
 
                     const sql = `UPDATE employee SET manager_id = ? WHERE id = ?`;
 
@@ -476,7 +466,7 @@ updateManager = () => {
   });
 };
 
-// function to view employee by department
+// Function allows user to view employees by department
 employeeDepartment = () => {
   console.log('Showing employee by departments...\n');
   const sql = `SELECT employee.first_name, 
@@ -493,7 +483,7 @@ employeeDepartment = () => {
   });          
 };
 
-// function to delete department
+// Function to delete a department
 deleteDepartment = () => {
   const deptSql = `SELECT * FROM department`; 
 
@@ -524,7 +514,7 @@ deleteDepartment = () => {
   });
 };
 
-// function to delete role
+// Function to delete a role
 deleteRole = () => {
   const roleSql = `SELECT * FROM role`; 
 
@@ -555,9 +545,9 @@ deleteRole = () => {
   });
 };
 
-// function to delete employees
+// Function to delete employees
 deleteEmployee = () => {
-  // get employees from employee table 
+  // Gets employees from the employee table 
   const employeeSql = `SELECT * FROM employee`;
 
   connection.promise().query(employeeSql, (err, data) => {
@@ -588,7 +578,7 @@ deleteEmployee = () => {
  });
 };
 
-// view department budget 
+// View the department's budget 
 viewBudget = () => {
   console.log('Showing budget by department...\n');
 
