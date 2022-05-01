@@ -1,0 +1,27 @@
+{
+  "name": "employee-tracker",
+  "description": "A command-line based application to manage a company's employee database, using Node.js, Inquirer, and MySQL",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikecota09/employee-tracker.git"
+  },
+  "author": "Michael Cota",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikecota09/employee-tracker/issues"
+  },
+  "homepage": "https://github.com/mikecota09/employee-tracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node.js": "^0.0.1-security",
+    "sqlite3": "^5.0.6"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
